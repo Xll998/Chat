@@ -1,28 +1,37 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Loading v-if=" $store.state.BeLoading " ></Loading>
+    <transition>
+    <router-view></router-view>
+    </transition>
+    <Footer v-if=' $store.state.BeFoo '></Footer>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Footer from './components/Footer'
+import Loading from './components/Loading'
+
+
+import './assets/js/font'
+import './assets/css/base.css'
+
+// import 'bootstrap/dist/css/bootstrap.css'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Footer,Loading
+  },
+  updated(){    
+    if(/detail/.test(this.$route.path) || /chatRoom/.test(this.$route.name)){      
+      this.$store.commit('UPDATE_BEFOO', false)
+    }else{
+      this.$store.commit('UPDATE_BEFOO', true)
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
